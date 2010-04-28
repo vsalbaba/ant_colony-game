@@ -1,6 +1,8 @@
 require '../aco/lib/ant_system'
 require 'rubygems'
 require 'sqlite3'
+
+
 class AntSystemGame < AntSystem
   attr_reader :root, :white_trails, :black_trails
   def initialize(rules, args = {})
@@ -154,11 +156,12 @@ class AntSystemGame < AntSystem
     when :black then
       trail v, :black
     else
-      @trails[v]
+      @trails[v.hash]
     end
   end
 
   private
+    #will initialize local trails. Global trails are managed by database.
     def initialize_trails
       @trails = Hash.new(0.0)
     end
