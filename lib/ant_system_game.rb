@@ -3,7 +3,7 @@ require 'pstore'
 
 
 class AntSystemGame
-  DEFAULT_TRAIL_LEVEL = 0.1
+  DEFAULT_TRAIL_LEVEL = 5.0
   attr_reader :root, :db
   def initialize(rules, args = {})
     @root = rules.new
@@ -12,7 +12,7 @@ class AntSystemGame
     @alpha = 2
     @beta = 0.9
     @evaporation_rate = 0.9
-    @quality_coefficient = 1.0
+    @quality_coefficient = 2.0
   end
 
   def tabu?(u, v)
@@ -84,8 +84,8 @@ class AntSystemGame
     # vytvorit sumu vsech cest
     solutions.each do |solution|
       p_quality = path_quality(solution)
-      solution.each do |position|
-        trails[position] += p_quality
+      solution.each do |position_hash|
+        trails[position_hash] += p_quality
       end
     end
     trails
@@ -138,9 +138,9 @@ class AntSystemGame
     #    p last_board.hash
     # worse => higher coeff modiff
     if last_board.winner == :white then
-      quality_coeff_modif = 0.2
+      quality_coeff_modif = 0.8
     elsif last_board.winner == :black then
-      quality_coeff_modif = 2
+      quality_coeff_modif = 1.5
     elsif last_board.draw? then
       quality_coeff_modif = 1.1
     else
